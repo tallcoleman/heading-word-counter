@@ -2,7 +2,7 @@
 
 A Google Docs script for grant writers that gives a word count for the text beneath each heading in a document as long as the heading indicates a word limit.
 
-![](/blob/master/example.png)
+![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/example.png)
 
 ## Installation
 
@@ -10,11 +10,11 @@ To use the script, you will have to add the script to your Google Doc. The steps
 
 1. Open the script editor (Tools > Script editor)
 
-2. Copy the [script from this repository named headingwordcounter.gs](/blob/master/headingwordcounter.gs). Paste it into the script editor and then save the script using the menu at the top of the script editor. Once the script is saved, you can close the script editor tab.
+2. Copy the [script from this repository named headingwordcounter.gs](https://github.com/tallcoleman/heading-word-counter/blob/main/headingwordcounter.gs). Paste it into the script editor and then save the script using the menu at the top of the script editor. Once the script is saved, you can close the script editor tab.
 
 3. Use the reload button in your browser to reload the Google Docs page. After the document has fully loaded, you should see a new menu named "Word Count".
 
-4. Select Word Count > Update Word Counts to run the script for the first time. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#why-does-google-say-this-script-is-unsafe).) You will have to authorize the script. After selecting "Continue", you will come to a screen that says "Google hasn't verified this app" (you may have to select your google account first).
+4. Select Word Count > Update Word Counts to run the script for the first time. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#google-apps-script-permisions-why-does-google-say-this-script-is-unsafe).) You will have to authorize the script. After selecting "Continue", you will come to a screen that says "Google hasn't verified this app" (you may have to select your google account first).
 
 5. Select "Advanced" at the bottom-left and then "Go to Untitled project (unsafe)". On the following permissions screen, select "Allow".
 
@@ -37,7 +37,9 @@ Due to the limitations of the Apps Script API, it is not possible for the script
 ### Customization
 You can customize the highlight colors used by changing the hexadecimal color codes at the top of the script.
 
-![](/blob/master/exampleclip.m4v)
+### Example Video
+
+![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/exampleclip.m4v)
 
 
 ## Uninstalling the Script
