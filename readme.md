@@ -70,8 +70,6 @@ This permission is required by a trigger that runs every minute to update your w
 
 * Check that the script correctly handles all of the content types allowable in Google Docs (e.g. tables, formulas); add and test error handling.
 
-* Add a feature to reset the running count after Horizontal Line objects to allow for instruction text to come after a heading but not be counted.
-
 * Improve triggers (stop time trigger when document is closed; explore using [`Files: watch`](https://developers.google.com/drive/api/v3/reference/files/watch) to approximate onEdit trigger available in Google Sheets).
 
 * Allow customizable syntax for word limit, improve text handling, and add options for character counts in addition to word counts.

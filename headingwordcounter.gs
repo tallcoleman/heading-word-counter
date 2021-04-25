@@ -40,6 +40,10 @@ function headingWordCount() {
     } else if (currentNode.getHeading() == 'NORMAL') {
       runningCount += countWords(currentNode);
     }
+    // horizontal rules
+    if (currentNode.findElement(DocumentApp.ElementType.HORIZONTAL_RULE) != null) {
+      runningCount = 0;
+    }
   } while (currentNode.isAtDocumentEnd() == false);
   headingUpdate(previousHeading, runningCount);
 }
@@ -57,7 +61,7 @@ function countWords(p) {
   //In cases where you have "...last word.First word..."
   //it doesn't count the two words around the period.
   //so I replace all punctuation with a space
-  var punctuationless = s.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"?“”]/g," ");
+  var punctuationless = s.replace(/[.,\/#!$%\^&\*;:{}=\_`~()"?“”…]/g," ");
   //Finally, trim it down to single spaces (not sure this even matters)
   var finalString = punctuationless.replace(/\s{2,}/g," ");
   //Actually count it
