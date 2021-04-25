@@ -34,6 +34,12 @@ The script will update:
 
 Due to the limitations of the Apps Script API, it is not possible for the script to automatically run more than once a minute.
 
+### Excluding Instruction Text From the Word Count
+
+If you need to put instructions after your heading but do not want them included in the word count, you can put a horizontal line just after the instructions (Insert > Horizontal line).
+
+The horizontal line will reset the word count to zero, so note that if you have multiple horizontal lines in your section, the word count will only include the text after the _last_ horizontal line before the next heading.
+
 ### Customization
 You can customize the highlight colors used by changing the hexadecimal color codes at the top of the script.
 
