@@ -39,7 +39,7 @@ You can customize the highlight colors used by changing the hexadecimal color co
 
 ### Example Video
 
-![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/exampleclip.m4v)
+![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/exampleclip.gif)
 
 
 ## Uninstalling the Script
