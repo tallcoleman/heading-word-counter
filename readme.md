@@ -37,10 +37,6 @@ Due to the limitations of the Apps Script API, it is not possible for the script
 ### Customization
 You can customize the highlight colors used by changing the hexadecimal color codes at the top of the script.
 
-### Example Video
-
-![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/exampleclip.gif)
-
 
 ## Uninstalling the Script
 
