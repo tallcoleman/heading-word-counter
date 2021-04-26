@@ -1,24 +1,31 @@
 # Heading Word Counter
 
-A Google Docs script for grant writers that gives a word count for the text beneath each heading in a document as long as the heading indicates a word limit.
+A Google Docs script for grant writers that gives a word count for the text beneath each heading if the heading indicates a word limit.
 
 ![](https://github.com/tallcoleman/heading-word-counter/blob/main/assets/example.png)
 
 ## Installation
 
-To use the script, you will have to add the script to your Google Doc. The steps are as follows:
+To use the script, you will have to add it to your Google Doc. The steps are as follows:
 
-1. Open the script editor (Tools > Script editor)
+1. Open the script editor from your Google Doc (Tools > Script editor).
 
-2. Copy the [script from this repository named headingwordcounter.gs](https://github.com/tallcoleman/heading-word-counter/blob/main/headingwordcounter.gs). Paste it into the script editor and then save the script using the menu at the top of the script editor. Once the script is saved, you can close the script editor tab.
+2. Copy the [headingwordcounter.gs script](https://github.com/tallcoleman/heading-word-counter/blob/main/headingwordcounter.gs), paste it into the script editor, and select 'Save'.
 
-3. Use the reload button in your browser to reload the Google Docs page. After the document has fully loaded, you should see a new menu named "Word Count".
+3. At this point, it is also a good idea to rename the script project from 'Untitled project' to a name that is the same as or similar to your Google Doc. You can rename the project by selecting its name at the top of your screen.
 
-4. Select Word Count > Update Word Counts to run the script for the first time. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#google-apps-script-permisions-why-does-google-say-this-script-is-unsafe).) You will have to authorize the script. After selecting "Continue", you will come to a screen that says "Google hasn't verified this app" (you may have to select your google account first).
+4. To the right of the icon is a function drop-down (it will probably say 'headingWordCount'). Open this drop-down, select 'createTimeTrigger', and then select 'Run'. This will create a trigger to run the script every minute.
 
-5. Select "Advanced" at the bottom-left and then "Go to Untitled project (unsafe)". On the following permissions screen, select "Allow".
+5. Since this is the first time you are using the script, it will ask you for permissions. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#google-apps-script-permisions-why-does-google-say-this-script-is-unsafe).)
 
-6. The script should now be running, and will run when you use your document in the future. If you want to run it right away, select Word Count > Update Word Counts again.
+6. After selecting "Continue", you may come to a screen that says "Google hasn't verified this app". If you are presented with this screen, select "Advanced" at the bottom-left and then "Go to Untitled project (unsafe)".
+
+7. When you reach the permissions screen, select "Allow".
+
+8. Use the reload button in your browser to reload your Google Docs page. After the document has fully loaded again, you should see a new menu named "Word Count".
+
+9. The script should now be fully installed. If you want to run it right away, select Word Count > Update Word Counts.
+
 
 ## Using the Script
 
@@ -26,13 +33,13 @@ The script counts all the words below a heading until it reaches the next headin
 
 The script will only create and update a word count if you put a word limit in brackets somewhere in the heading text. For example, for a section with a word limit of 250 words, you could add either `(250w)` or `(250words)` anywhere in your heading.
 
-After it has run the first time, the script will add a word count, e.g. if you have written 150 words, the text in parentheses will now say `(150/250w)`. The script will also highlight the word count with a color to indicate if you are below, close to, or above the word limit.
+After it has run, the script will add or update a word count in these brackts. For example, if you have written 150 words, the text in parentheses will now say `(150/250w)`. The script will also highlight the word count with a color to indicate if you are below, close to, or above the word limit.
 
-The script will update:
-* Every minute after you have added or deleted words (i.e. if the length of the document changes)
-* Immediately after selecting Word Count > Update Word Counts in the menu bar
+The script will update the word counts in your document:
+* Every minute; or
+* Immediately after selecting Word Count > Update Word Counts in the menu bar.
 
-Due to the limitations of the Apps Script API, it is not possible for the script to automatically run more than once a minute.
+Due to the limitations of the Apps Script service, the script is not currently able to automatically update the word counts more than once a minute.
 
 ### Excluding Instruction Text From the Word Count
 
@@ -48,13 +55,11 @@ You can customize the highlight colors used by changing the hexadecimal color co
 
 To remove the script:
 
-1. Delete the script from the script editor
+1. Delete the script using the script editor
 
-2. Using the menu on the left of the script editor, go to the Triggers pane (the icon looks like an alarm clock). Delete the trigger listed on the pane using the three-dot menu on its right.
+2. Using the menu on the left of the script editor, go to the Triggers pane (alarm clock icon). Delete the trigger listed on the pane using the three-dot menu on its right.
 
-3. Go to [myaccount.google.com/permissions](https://myaccount.google.com/permissions) and remove the script from your permissions list. It will likely be named "Untitled project" unless you changed this project name in the script editor. Select "REMOVE ACCESS" to remove the permissions for the script.
-
-(If you have multiple items in your permissions list named "Untitled project", you should be able to figure out which is the right one by looking at "Access given on:").
+3. Go to [myaccount.google.com/permissions](https://myaccount.google.com/permissions) and remove the project from your permissions list. The project will have the name you gave it in step 3 of the installation. If you did not rename the project, it will be named 'Untitled project'. Select "REMOVE ACCESS" to remove the permissions for the script.
 
 
 ## Google Apps Script Permisions (Why does Google say this script is unsafe?)
@@ -68,7 +73,7 @@ This permission is required by the functions that work with your document (e.g. 
 
 **Allow this application to run when you are not present**
 
-This permission is required by a trigger that runs every minute to update your word counts while you are writing. At the moment, I have not added the work-around required to stop the trigger when the document is not open. However, the trigger does nothing while the document is closed since the document length is not changing.
+This permission is required by a trigger that runs every minute to update your word counts while you are writing. At the moment, I have not added the work-around required to stop the trigger when the document is not open. However, the trigger does nothing while the document is closed. (The script checks to see if the document length has changed before running).
 
 ## Future Plans
 

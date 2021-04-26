@@ -139,7 +139,6 @@ function onOpen() {
   ui.createMenu('Word Count')
       .addItem('Update Word Counts', 'headingWordCount')
       .addToUi();
-  createTimeTrigger();
 }
 
 // Create time-based trigger
