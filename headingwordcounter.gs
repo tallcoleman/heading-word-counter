@@ -22,7 +22,8 @@ function headingWordCount() {
   var previousHeading;
 
 // special case for first node in document
-  if (currentNode.getHeading() != 'NORMAL') {
+  if (currentNode.getHeading == null) { ;
+  } else if (currentNode.getHeading() != 'NORMAL') {
     previousHeading = currentNode;
   } else if (currentNode.getHeading() == 'NORMAL') {
     runningCount += countWords(currentNode);
@@ -31,8 +32,11 @@ function headingWordCount() {
 // main processing loop
   do {
     currentNode = currentNode.getNextSibling();
-    // headings
-    if (currentNode.getHeading() != 'NORMAL') {
+    // skip tables
+    if (currentNode.getHeading == null) {
+      continue;
+    //headings
+    } else if (currentNode.getHeading() != 'NORMAL') {
       headingUpdate(previousHeading, runningCount);
       runningCount = 0;
       previousHeading = currentNode;
