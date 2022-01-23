@@ -35,14 +35,10 @@ The script will only create and update a word count if you put a word or charact
 
 After it has run, the script will add or update the relevant count in these brackets. For example, if you have written 150 words, the text in parentheses will now say `(150/250w)`. The script will also highlight the count with a color to indicate if you are below, close to, or above the word limit.
 
-The script is highly customizable using the variables in the preferences section. The only caveat is that the values in the text matching section need to be regular expression–friendly. For example, if you wanted to use `[250w]` instead of `(250w)`, you would have to use the following, since `[` and `]` are special characters:
-
-```javascript
-const textEncapsulators = [raw`\[`, raw`\]`];
-```
+### Running the Script
 
 The script will update the word counts in your document:
-* Every minute; or
+* Automatically every minute; or
 * Immediately after selecting Word Count > Update Word Counts in the menu bar.
 
 Due to the limitations of the Apps Script service, the script is not currently able to automatically update the word counts more than once a minute.
@@ -54,8 +50,17 @@ If you need to put instructions after your heading but do not want them included
 The horizontal line will reset the word count to zero, so note that if you have multiple horizontal lines in your section, the word count will only include the text after the _last_ horizontal line before the next heading.
 
 ### Customization
-You can customize the highlight colors used by changing the hexadecimal color codes at the top of the script.
+The script is highly customizable using the variables in the preferences section. Options include:
 
+* Providing your own highlight colours
+* Setting a custom threshold for getting "close" to the word or character limit
+* Creating your own syntax for including the word count in headings
+
+The only caveat is that the values in the text matching section need to be regular expression–friendly. For example, if you wanted to use `[250w]` instead of `(250w)`, you would have to use the following, since `[` and `]` are special characters:
+
+```javascript
+const textEncapsulators = [raw`\[`, raw`\]`];
+```
 
 ## Uninstalling the Script
 
