@@ -14,17 +14,17 @@ To use the script, you will have to add it to your Google Doc. The steps are as 
 
 3. At this point, it is also a good idea to rename the script project from 'Untitled project' to a name that is the same as or similar to your Google Doc. You can rename the project by selecting its name at the top of your screen.
 
-4. To the right of the icon is a function drop-down (it will probably say 'headingWordCount'). Open this drop-down, select 'createTimeTrigger', and then select 'Run'. This will create a trigger to run the script every minute.
+4. To the right of the icon is a function drop-down (it will probably say 'headingWordCount'). Open this drop-down, select 'createOnOpenTrigger', and then select 'Run'. This starts the automatic count which updates every minute, and ensures the automatic count re-starts if needed when the document is opened.
 
-5. Since this is the first time you are using the script, it will ask you for permissions. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#google-apps-script-permisions-why-does-google-say-this-script-is-unsafe).)
+5. Since this is the first time you are using the script, it will ask you for permissions. (If you are unfamiliar with Google Apps Script permissions, you can [read a short explainer below](#google-apps-script-permissions-why-does-google-say-this-script-is-unsafe).)
 
 6. After selecting "Continue", you may come to a screen that says "Google hasn't verified this app". If you are presented with this screen, select "Advanced" at the bottom-left and then "Go to Untitled project (unsafe)".
 
 7. When you reach the permissions screen, select "Allow".
 
-8. Use the reload button in your browser to reload your Google Docs page. After the document has fully loaded again, you should see a new menu named "Word Count".
+8. You should see a new menu named "Word Count" in your Google Docs window.
 
-9. The script should now be fully installed. If you want to run it right away, select Word Count > Update Word Counts.
+9.  The script should now be fully installed. If you want to run it right away, select Word Count > Update Word/Character Counts.
 
 
 ## Using the Script
@@ -39,13 +39,19 @@ After it has run, the script will add or update the relevant count in these brac
 
 The script will update the word counts in your document:
 * Automatically every minute; or
-* Immediately after selecting Word Count > Update Word Counts in the menu bar.
+* Immediately after selecting Word Count > Update Word/Character Counts in the menu bar.
+
+### Automatic Update Timeout
+
+If the document has not been edited in a while (30 minutes by default) the script will stop automatically updating word counts. The timeout can be restarted by reloading the document or by selecting Word Count > Update Word/Character Counts in the menu bar.
+
+This timeout feature helps to minimize the amount that the script uses up your [daily quotas for Apps Script services](https://developers.google.com/apps-script/guides/services/quotas?hl=en).
 
 Due to the limitations of the Apps Script service, the script is not currently able to automatically update the word counts more than once a minute.
 
-### Excluding Instruction Text From the Word Count
+### Excluding Text From the Word Count
 
-If you need to put instructions after your heading but do not want them included in the word count, you can put a horizontal line just after the instructions (Insert > Horizontal line).
+If you need to put instructions or notes after your heading but do not want them included in the word count, you can put a horizontal line just after the instructions (Insert > Horizontal line).
 
 The horizontal line will reset the word count to zero, so note that if you have multiple horizontal lines in your section, the word count will only include the text after the _last_ horizontal line before the next heading.
 
@@ -55,6 +61,7 @@ The script is highly customizable using the variables in the preferences section
 * Providing your own highlight colours
 * Setting a custom threshold for getting "close" to the word or character limit
 * Creating your own syntax for including the word count in headings
+* Changing the automatic update timeout
 
 The only caveat is that the values in the text matching section need to be regular expression–friendly. For example, if you wanted to use `[250w]` instead of `(250w)`, you would have to use the following, since `[` and `]` are special characters:
 
@@ -62,18 +69,19 @@ The only caveat is that the values in the text matching section need to be regul
 const textEncapsulators = [raw`\[`, raw`\]`];
 ```
 
+(`raw` is used in the script as a concise alias for [`String.raw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/raw))
+
 ## Uninstalling the Script
 
-To remove the script:
+The easiest way to completely remove the script, including its triggers and permissions, is to go to the "Overview" menu in the script editor (`(i)` icon), and then select "Delete Project Forever" at the top-right of the page (trash can icon).
 
-1. Delete the script using the script editor
+If you are using other scripts in your document, you can simply delete the script code and remove its triggers in the "Triggers" menu of the script editor (clock icon). You should be able to determine the correct triggers to remove based on the function column:
 
-2. Using the menu on the left of the script editor, go to the Triggers pane (alarm clock icon). Delete the trigger listed on the pane using the three-dot menu on its right.
+* `onOpenActions` for the trigger that runs when the document is opened or reloaded
+* `runCount` for the trigger that runs every minute (if it hasn't already been removed by the timeout)
 
-3. Go to [myaccount.google.com/permissions](https://myaccount.google.com/permissions) and remove the project from your permissions list. The project will have the name you gave it in step 3 of the installation. If you did not rename the project, it will be named 'Untitled project'. Select "REMOVE ACCESS" to remove the permissions for the script.
 
-
-## Google Apps Script Permisions (Why does Google say this script is unsafe?)
+## Google Apps Script Permissions (Why does Google say this script is unsafe?)
 Google Apps use the same security system for scripts that you write (or copy in) yourself and add-ons created by third parties. The permissions system is therefore designed to be very cautious so that users do not give third parties unintended permissions for their Google Account.
 
 The permissions used by the script are required for the following reasons:
@@ -84,14 +92,15 @@ This permission is required by the functions that work with your document (e.g. 
 
 **Allow this application to run when you are not present**
 
-This permission is required by a trigger that runs every minute to update your word counts while you are writing. At the moment, I have not added the work-around required to stop the trigger when the document is not open. However, the trigger does nothing while the document is closed. (The script checks to see if the document length has changed before running).
+This permission is required by a trigger that runs every minute to update the word counts in your document while you are writing. This trigger does not do anything while the document is closed, since it only acts if the number of words in the document has changed since it last ran. It is automatically removed after each timeout period.
+
 
 ## Future Plans
 
-* Improve the word counting algorithm and add customizability to account for grant portals that use different word counting methods than Google Docs.
+* Improve the word counting algorithm and add customization options to account for grant portals that use slightly different word counting methods.
 
-* Check that the script correctly handles all of the content types allowable in Google Docs (e.g. tables, formulas); add and test error handling.
+* Ensure that the script correctly handles all of the content types allowable in Google Docs (e.g. tables, formulas); add and test error handling.
 
-* Improve triggers if possible (stop time trigger when document is closed, see if there is a way to update more frequently, simplify process for multiple documents)
+* Improve triggers if possible (see if there is a way to update more frequently, simplify process for multiple documents).
 
 * Explore option to publish as an add-on.

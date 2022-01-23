@@ -2,8 +2,10 @@
 // Author: Ben Coleman (ben[dot]coleman[at]alum[dot]utoronto[dot]ca)
 // Github repository: https://github.com/tallcoleman/heading-word-counter
 
-// prefix for raw strings
+// GLOBAL ALIASES
 const raw = String.raw;
+let documentProperties = PropertiesService.getDocumentProperties();
+
 
 // PREFERENCES
 // text highlight colors in hex format
@@ -29,6 +31,22 @@ const textSeparators = [raw`\/`];                     // default '/'
 const textWordLimitTokens = ['w', 'words'];
 const textCharLimitTokens = ['c', 'char', 'chars'];
 const textMaxLimitTokens = ['max', 'maximum'];
+
+// trigger timeout
+const triggerTimeOut = 30; // number of minutes
+
+
+// SETUP
+// run this to create onOpen trigger
+function createOnOpenTrigger() {
+  ScriptApp.newTrigger('onOpenActions')
+    .forDocument(DocumentApp.getActiveDocument())
+    .onOpen()
+    .create()
+
+  // run actions if document already open
+  onOpenActions();
+}
 
 
 // INITIALIZATION
@@ -170,31 +188,91 @@ function headingUpdate(heading, counts) {
 
 
 // MENU & TRIGGER GENERATION
-// Check if document length has changed before running time trigger
-function isEdited() {
+
+// Main processing function
+function runCount() {
+  // Check if document length has changed before running time trigger
   let myDoc = DocumentApp.getActiveDocument().getBody();
   let docText = myDoc.editAsText().getText();
   let docLen = docText.length;
-  if(docLen != PropertiesService.getDocumentProperties().getProperty('docLen'))
-  {
+  if(docLen != documentProperties.getProperty('docLen')) {
     parProcess(myDoc.getChild(0));
-    PropertiesService.getDocumentProperties().setProperty('docLen', docLen)
+    documentProperties.setProperty('docLen', docLen)
+    documentProperties.setProperty('lastUpdated', Date.now());
+  }
+
+  // remove trigger on timeout
+  let myDocID = DocumentApp.getActiveDocument().getId();
+  let lastUpdated = new Date(Number(documentProperties.getProperty('lastUpdated')));
+  let lastManualRun = new Date(Number(documentProperties.getProperty('lastManualRun')));
+  Logger.log(lastUpdated);
+  Logger.log(lastManualRun);
+  let timeOutDate = lastUpdated > lastManualRun ? lastUpdated : lastManualRun;
+  let elapsedTime = Math.floor((Date.now() - timeOutDate.getTime()) / 1000 / 60);
+  if (elapsedTime >= triggerTimeOut) {
+    deleteTrigger(documentProperties.getProperty('timeTriggerID'));
+    Logger.log(`Trigger removed: script timed out after ${triggerTimeOut} minutes.`);
   }
 }
 
-// Create custom menu to run utility
-function onOpen() {
+// creates menu and starts trigger on open
+function onOpenActions() {
+  // create menu
   let ui = DocumentApp.getUi();
   ui.createMenu('Word Count')
-      .addItem('Update Word Counts', 'isEdited')
+      .addItem('Update Word/Character Counts', 'manualRunCount')
       .addToUi();
+
+  manualRunCount();
+}
+
+// Manually (re)start script and start a manual timeout
+function manualRunCount() {
+  if (!timeTriggerExists()) {
+    documentProperties.setProperty('timeTriggerID', createTimeTrigger());
+  }
+  runCount();
+
+  // reset manual cooldown
+  documentProperties.setProperty('lastManualRun', Date.now());
+}
+
+// Check to see if time-based trigger exists
+function timeTriggerExists() {
+  let timeTriggerID = documentProperties.getProperty('timeTriggerID');
+  if (!timeTriggerID) return false;
+
+  // Detect if user has manually deleted the trigger
+  let allTriggers = ScriptApp.getProjectTriggers();
+  for (trigger of allTriggers) {
+    if (trigger.getUniqueId() === timeTriggerID) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // Create time-based trigger
 function createTimeTrigger() {
   // Trigger every minute
-  ScriptApp.newTrigger('isEdited')
+  let timeTriggerID = ScriptApp.newTrigger('runCount')
     .timeBased()
     .everyMinutes(1)
-    .create();
+    .create()
+    .getUniqueId();
+  
+  return timeTriggerID;
+}
+
+// Remove time-based trigger
+function deleteTrigger(triggerID) {
+  // Loop over all triggers
+  let allTriggers = ScriptApp.getProjectTriggers();
+  for (trigger of allTriggers) {
+    if (trigger.getUniqueId() === triggerID) {
+      ScriptApp.deleteTrigger(trigger);
+      documentProperties.deleteProperty('timeTriggerID');
+      break;
+    }
+  }
 }
