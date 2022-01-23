@@ -83,7 +83,7 @@ function parProcess(currentNode, runningCount = {words: 0, chars: 0}, previousHe
     }
 
     // stop if at end of doc
-    if (currentNode.isAtDocumentEnd()) {
+    if (currentNode.isAtDocumentEnd() || !currentNode.getNextSibling()) {
         headingUpdate(previousHeading, runningCount);
     } else {
         return parProcess(currentNode.getNextSibling(), runningCount, previousHeading);
