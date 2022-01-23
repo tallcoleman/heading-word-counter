@@ -205,8 +205,6 @@ function runCount() {
   let myDocID = DocumentApp.getActiveDocument().getId();
   let lastUpdated = new Date(Number(documentProperties.getProperty('lastUpdated')));
   let lastManualRun = new Date(Number(documentProperties.getProperty('lastManualRun')));
-  Logger.log(lastUpdated);
-  Logger.log(lastManualRun);
   let timeOutDate = lastUpdated > lastManualRun ? lastUpdated : lastManualRun;
   let elapsedTime = Math.floor((Date.now() - timeOutDate.getTime()) / 1000 / 60);
   if (elapsedTime >= triggerTimeOut) {
@@ -231,10 +229,11 @@ function manualRunCount() {
   if (!timeTriggerExists()) {
     documentProperties.setProperty('timeTriggerID', createTimeTrigger());
   }
-  runCount();
-
+  
   // reset manual cooldown
   documentProperties.setProperty('lastManualRun', Date.now());
+
+  runCount();
 }
 
 // Check to see if time-based trigger exists
