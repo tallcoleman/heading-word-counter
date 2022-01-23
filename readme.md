@@ -29,11 +29,17 @@ To use the script, you will have to add it to your Google Doc. The steps are as 
 
 ## Using the Script
 
-The script counts all the words below a heading until it reaches the next heading. In order to create a heading, you have to use [document styles](https://support.google.com/docs/answer/116338) (e.g. Title, Heading 1, Heading 2, etc.)
+The script counts all the words or characters below a heading until it reaches the next heading. In order to create a heading, you have to use [document styles](https://support.google.com/docs/answer/116338) (e.g. Title, Heading 1, Heading 2, etc.)
 
-The script will only create and update a word count if you put a word limit in brackets somewhere in the heading text. For example, for a section with a word limit of 250 words, you could add either `(250w)` or `(250words)` anywhere in your heading.
+The script will only create and update a word count if you put a word or character limit in brackets somewhere in the heading text. For example, for a section with a word limit of 250 words, you could add either `(250w)` or `(250words)` anywhere in your heading. The format for character counts would be similar: `(1000c)`, `(1000char)`, and `(1000chars)` will all work by default.
 
-After it has run, the script will add or update a word count in these brackts. For example, if you have written 150 words, the text in parentheses will now say `(150/250w)`. The script will also highlight the word count with a color to indicate if you are below, close to, or above the word limit.
+After it has run, the script will add or update the relevant count in these brackets. For example, if you have written 150 words, the text in parentheses will now say `(150/250w)`. The script will also highlight the count with a color to indicate if you are below, close to, or above the word limit.
+
+The script is highly customizable using the variables in the preferences section. The only caveat is that the values in the text matching section need to be regular expression–friendly. For example, if you wanted to use `[250w]` instead of `(250w)`, you would have to use the following, since `[` and `]` are special characters:
+
+```javascript
+const textEncapsulators = [raw`\[`, raw`\]`];
+```
 
 The script will update the word counts in your document:
 * Every minute; or
@@ -81,8 +87,6 @@ This permission is required by a trigger that runs every minute to update your w
 
 * Check that the script correctly handles all of the content types allowable in Google Docs (e.g. tables, formulas); add and test error handling.
 
-* Improve triggers (stop time trigger when document is closed; explore using [`Files: watch`](https://developers.google.com/drive/api/v3/reference/files/watch) to approximate onEdit trigger available in Google Sheets).
-
-* Allow customizable syntax for word limit, improve text handling, and add options for character counts in addition to word counts.
+* Improve triggers if possible (stop time trigger when document is closed, see if there is a way to update more frequently, simplify process for multiple documents)
 
 * Explore option to publish as an add-on.
