@@ -69,7 +69,7 @@ The only caveat is that the values in the text matching section need to be regul
 const textEncapsulators = [raw`\[`, raw`\]`];
 ```
 
-(`raw` is used in the script as a concise alias for [`String.raw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/raw))
+(Note: `raw` is used in the script as a concise alias for [`String.raw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/raw). If you want to use regular strings, you can double escape special characters instead (e.g. `'\\['` or `'\\]'`).)
 
 ## Uninstalling the Script
 

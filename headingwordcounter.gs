@@ -154,8 +154,9 @@ function headingUpdate(heading, counts) {
     // write in unit count with appropriate formatting
     // add new unit count to heading
     let trailingSeparator = !matches.groups.trailingSeparator ? textSeparators[0].replace('\\','') : '';
-    let newHeadingText = heading.getText().replace(reIndicator, `$<unitCountPrefix>${unitCount}${trailingSeparator}$<unitCountSuffix>`);
-    heading.setText(newHeadingText);
+    // convert to RE2-compliant syntax for .replaceText() method
+    let reIndicatorRE2 = reIndicator.source.replace(/\(\?</g,"(?P<");
+    heading.replaceText(reIndicatorRE2, `${matches.groups.unitCountPrefix}${unitCount}${trailingSeparator}${matches.groups.unitCountSuffix}`);
 
     // determine string position of updated unit count
     let unitCountBegins = matches.index + matches.groups.unitCountPrefix.length;
