@@ -82,7 +82,7 @@ const reIndicator = new RegExp(reComponents.join(raw`\s*?`));
 // Iterate through paragraphs
 function parProcess(currentNode, runningCount = {words: 0, chars: 0}, previousHeading) {
     // skips tables
-    if (currentNode.getHeading()) {
+    if (currentNode.getHeading) {
         // headings
         if (currentNode.getHeading() != 'NORMAL') {
             if (previousHeading) headingUpdate(previousHeading, runningCount);
