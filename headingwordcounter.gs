@@ -192,6 +192,9 @@ function headingUpdate(heading, counts) {
 
 // Main processing function
 function runCount() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(4000);
+
   // Check if document length has changed before running time trigger
   let myDoc = DocumentApp.getActiveDocument().getBody();
   let docText = myDoc.editAsText().getText();
@@ -212,6 +215,7 @@ function runCount() {
     deleteTrigger(documentProperties.getProperty('timeTriggerID'));
     Logger.log(`Trigger removed: script timed out after ${triggerTimeOut} minutes.`);
   }
+  lock.releaseLock();
 }
 
 // creates menu and starts trigger on open
