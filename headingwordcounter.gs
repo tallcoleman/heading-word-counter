@@ -149,7 +149,7 @@ function headingUpdate(heading, counts) {
     } else {
         return;
     }
-    unitCount = counts[unitType]
+    unitCount = counts[unitType];
 
     // write in unit count with appropriate formatting
     // add new unit count to heading
